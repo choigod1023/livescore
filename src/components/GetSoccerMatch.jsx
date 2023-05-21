@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
+
 function getStringTime(time) {
   let displayTime = time.split(":");
   console.log(displayTime);
@@ -33,10 +35,12 @@ const GetSoccerMatch = () => {
       {
         Object.values(data).map((item, idx) => {
           console.log(item)
+          
           let resultTime = getStringTime(item.displayTime);
           return (
             <div key={idx}>
               <span>{resultTime}</span>
+              {item.eventType ==="SUBSTITUTE" ? <img width="30rem" height="30rem" src = {`${process.env.PUBLIC_URL}/substitution.png`} alt="sub" /> : ""}
               <span>{item.playText}</span>
             </div>
           )
