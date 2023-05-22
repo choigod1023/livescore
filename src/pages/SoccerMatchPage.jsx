@@ -1,10 +1,8 @@
 import GetSoccerMatch from '../components/GetSoccerMatch';
-const SoccerMatchPage = ()=>
-{
-    return(
+const SoccerMatchPage = () => {
+    return (
         <div>
-            매치 정보
-            <GetSoccerMatch/>
+            <GetSoccerMatch />
         </div>
     )
 }

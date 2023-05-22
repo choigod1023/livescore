@@ -1,10 +1,8 @@
 import GetBaseballMatch from "../components/GetBaseballMatch";
-const BaseballMatchPage = ()=>
-{
-    return(
+const BaseballMatchPage = () => {
+    return (
         <div>
-            매치 정보
-            <GetBaseballMatch/>
+            <GetBaseballMatch />
         </div>
     )
 }

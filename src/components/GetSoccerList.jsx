@@ -31,7 +31,10 @@ font-size: 15px;
   }
 `;
 const StyledMatch = styled.div
-`
+  `
+.away_teams{
+  margin-left:10px;
+}
 `;
 
 
@@ -145,10 +148,10 @@ function GetSoccer() {
                       </StyledLeague>
                     </div>
                     <StyledMatch>
-                      <span className="teams">{item.teams.away.name}</span>
-                      <span className="score">{awayScore+" : "}</span>
+                      <span className="away_teams">{item.teams.away.name}</span>
+                      <span className="score">{awayScore + " : "}</span>
                       <span className="score">{homeScore}</span>
-                      <span className="teams">{item.teams.home.name}</span>
+                      <span className="home_teams">{item.teams.home.name}</span>
                     </StyledMatch>
                   </div>
                 </StyledList>
