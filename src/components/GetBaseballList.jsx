@@ -18,18 +18,17 @@ const StyledList = styled.li`
   }
 `;
 const StyledLeague = styled.div`
-  position: absolute;
+float:left;
+width:200px;
+font-size: 15px;
   .time{
+    float:right;
+    width: 80px;
     border: 1px solid #eceff3;
     border-radius: 5px;
     background-color : grey;
     color : white;
-    top : 50%;
-    bottom : 50%;
-    left : 50%;
-    right : 50%;
   }
-  
 `;
 const StyledMatch = styled.div
 `
@@ -42,10 +41,10 @@ const linkStyle = {
 };
 
 const timeStyle = {
-  marginBottom: "5px",
+
+  marginTop: "5px"
 };
 const leagueNameStyle = {
-  marginRight: "5px",
 };
 
 function YeardateFormat(date) {
@@ -122,7 +121,7 @@ function GetBaseball() {
               <Link
                 style={linkStyle}
                 to={{
-                  pathname: `/match/baseball/${item.id}`,
+                  pathname: `/match/Baseball/${item.id}`,
                   state: {
                     id: item.id,
                     name: item.name,
