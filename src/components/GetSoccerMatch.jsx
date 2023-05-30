@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { styled } from "styled-components";
 
-
+const StyledScore = styled.div`
+text-align: center;
+`
 function getStringTime(time) {
   let displayTime = time.split(":");
   console.log(displayTime);
@@ -31,18 +34,23 @@ const GetSoccerMatch = () => {
   //   console.log(data[1]);
   return (
     <div>
-      <h1>Soccer Match</h1>
       {
         Object.values(data).map((item, idx) => {
           console.log(item)
-          
+
           let resultTime = getStringTime(item.displayTime);
           return (
-            <div key={idx}>
-              <span>{resultTime}</span>
-              {item.eventType ==="SUBSTITUTE" ? <img width="30rem" height="30rem" src = {`${process.env.PUBLIC_URL}/substitution.png`} alt="sub" /> : ""}
-              <span>{item.playText}</span>
-            </div>
+
+            <StyledScore>
+              <div key={idx}>
+                <span>{resultTime}</span>
+                {item.eventType === "SUBSTITUTE" ? <img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/substitution.png`} alt="sub" /> : ""}
+                {item.eventType === "GOAL" ? <img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/soccer.png`} alt="goal" /> : ""}
+                {item.eventType === "YELLOW_CARD" ? <img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/yellowcard.png`} alt="yellowcard" /> : ""}
+                {item.eventType === "RED_CARD" ? <img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/yellowcard.png`} alt="redcard" /> : ""}
+                <span>{item.playText}</span>
+              </div>
+            </StyledScore>
           )
 
 

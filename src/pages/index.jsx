@@ -35,8 +35,7 @@ function YeardateFormat(date) {
 const MainPage = () => {
   const [data, setData] = useState('baseball');
 
-  const handleClickEvent = (e,message) => {
-    
+  const handleClickEvent = (e, message) => {
     setData(message);
   };
 
@@ -51,8 +50,8 @@ const MainPage = () => {
     <Container>
       <h1>{date + " 오늘의 경기"}</h1>
       <Image>
-      <img src={`${process.env.PUBLIC_URL}/baseball.webp`} alt="" onClick={(e) => handleClickEvent(e,'baseball')}/>
-      <img src={`${process.env.PUBLIC_URL}/soccer.png`} onClick={(e)=> handleClickEvent(e,'soccer')} name="soccer"/>
+        <img src={`${process.env.PUBLIC_URL}/baseball.webp`} alt="" onClick={(e) => handleClickEvent(e, 'baseball')} />
+        <img src={`${process.env.PUBLIC_URL}/soccer.png`} onClick={(e) => handleClickEvent(e, 'soccer')} name="soccer" />
       </Image>
       {data && <div>{selectComponent[data]}</div>}
     </Container>

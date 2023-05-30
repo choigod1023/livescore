@@ -34,6 +34,7 @@ const StyledMatch = styled.div
   `
 .away_teams{
   margin-left:10px;
+  
 }
 `;
 
@@ -112,12 +113,18 @@ function GetSoccer() {
             homeScore = " " + totalScore(homeScoreData) + " ";
             awayScore = " " + totalScore(awayScoreData) + " ";
 
+            let matchResult = item.result;
             let objectMatchTime = new Date(item.startDatetime);
             let nowTime = new Date();
+
             let matchTime = "몰라용";
-            if (nowTime > objectMatchTime) {
+            if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "WIN")) {
               matchTime = " 경기 종료 ";
-            } else {
+            }
+            else if (nowTime > objectMatchTime && matchResult === "UNKNOWN") {
+              matchTime = "경기 중";
+            }
+            else {
               matchTime = TimedateFormat(objectMatchTime);
             }
             return (

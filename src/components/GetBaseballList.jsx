@@ -1,33 +1,55 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+const StyledList = styled.li`
+  width: 800px;
+  padding: 10px;
+  text-align: center;
+  height: 30px;
+  border: 1px solid #eceff3;
+  text-decoration: none;
+  list-style-type: none;
+  position: relative;
+
+  &:hover {
+    background-color: #eceff3;
+  }
+`;
+const StyledLeague = styled.div`
+float:left;
+width:200px;
+font-size: 15px;
+  .time{
+    float:right;
+    width: 80px;
+    border: 1px solid #eceff3;
+    border-radius: 5px;
+    background-color : grey;
+    color : white;
+  }
+`;
+const StyledMatch = styled.div
+  `
+.away_teams{
+  margin-left:10px;
+  
+}
+`;
+
 
 const linkStyle = {
   textDecoration: "none",
   color: "black",
 };
 
-const TableStyle = styled.div`
-table,tr,th,td
-{
-  text-align: center;
-  border : 1px solid #c8c8c8;
-}
+const timeStyle = {
 
-
-tr:hover:not(.tableHeader){
-  background-color: yellow;
-  cursor: pointer;
-}
-.tableHeader{
-  background-color:#003366;
-  color:white;
-}
-table{
-  border-collapse: collapse;
-}
-`
+  marginTop: "5px"
+};
+const leagueNameStyle = {
+};
 
 function YeardateFormat(date) {
   let month = date.getMonth() + 1;
@@ -66,10 +88,7 @@ function totalScore(periodData) {
 
 function GetBaseball() {
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
-  const onClickPage = (state) => {
-    navigate(`/match/baseball/${state.id}`, state);
-  }
+
   useEffect(() => {
     let today = new Date();
     let string_today = YeardateFormat(today);
@@ -83,66 +102,71 @@ function GetBaseball() {
   console.log(data);
 
   return (
-    <TableStyle>
-      <table>
-        <thead>
-          <tr className="tableHeader">
-            <th>리그</th>
-            <th>일정</th>
-            <th>홈</th>
-            <th>점수</th>
-            <th>어웨이</th>
-            <th>중계</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.baseball &&
-            data.baseball.map((item, index) => {
-              let homeScoreData = item.teams.home.periodData;
-              let awayScoreData = item.teams.away.periodData;
-              let homeScore = 0;
-              let awayScore = 0;
-              homeScore = " " + totalScore(homeScoreData) + " ";
-              awayScore = " " + totalScore(awayScoreData) + " ";
+    <div>
+      <div>
+        {data.baseball &&
+          data.baseball.map((item, index) => {
+            let homeScoreData = item.teams.home.periodData;
+            let awayScoreData = item.teams.away.periodData;
+            let homeScore = 0;
+            let awayScore = 0;
+            homeScore = " " + totalScore(homeScoreData) + " ";
+            awayScore = " " + totalScore(awayScoreData) + " ";
 
-              let objectMatchTime = new Date(item.startDatetime);
-              let nowTime = new Date();
-              let State = {
-                id: item.id,
-                name: item.name,
-                date: item.date,
-                homeName: item.teams.home.name,
-                awayName: item.teams.away.name,
-                homeScore: item.teams.home.score,
-                awayScore: item.teams.away.score,
-              }
-              let matchTime = "몰라용";
-              if (nowTime > objectMatchTime) {
-                matchTime = " 경기 종료 ";
-              } else {
-                matchTime = TimedateFormat(objectMatchTime);
-              }
-              return (<>
-                <tr className="match" onClick={(e) => onClickPage(State)} >
-                  <td className="league">{item.league.shortName}</td>
-                  <td className="matchTime">{matchTime}</td>
-                  <td className="home">{item.teams.home.name}</td>
-                  <td className="score">{awayScore + " : " + homeScore}</td>
-                  <td className="away">{item.teams.away.name}</td>
-                  <td><Link
-                    style={linkStyle}
-                    to={{
-                      pathname: `/match/Baseball/${item.id}`,
-                      state: State,
-                    }}
-                    key={index}
-                  >바로가기</Link></td>
-                </tr>
-              </>);
-            })}
-        </tbody>
-      </table>
-    </TableStyle>
+            let matchResult = item.result;
+            let objectMatchTime = new Date(item.startDatetime);
+            let nowTime = new Date();
+
+            let matchTime = "몰라용";
+            if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "WIN")) {
+              matchTime = " 경기 종료 ";
+            }
+            else if (nowTime > objectMatchTime && matchResult === "UNKNOWN") {
+              matchTime = "경기 중";
+            }
+            else {
+              matchTime = TimedateFormat(objectMatchTime);
+            }
+            return (
+              <Link
+                style={linkStyle}
+                to={{
+                  pathname: `/match/Baseball/${item.id}`,
+                  state: {
+                    id: item.id,
+                    name: item.name,
+                    date: item.date,
+                    homeName: item.teams.home.name,
+                    awayName: item.teams.away.name,
+                    homeScore: item.teams.home.score,
+                    awayScore: item.teams.away.score,
+                  },
+                }}
+                key={index}
+              >
+                <StyledList>
+                  <div className="BaseballMatches">
+                    <div className="LeagueTime" style={timeStyle}>
+                      <StyledLeague>
+                        <span className="league" style={leagueNameStyle}>
+                          {item.league.shortName}
+                        </span>
+                        <span className="time">{matchTime}</span>
+                      </StyledLeague>
+                    </div>
+                    <StyledMatch>
+                      <span className="away_teams">{item.teams.away.name}</span>
+                      <span className="score">{awayScore + " : "}</span>
+                      <span className="score">{homeScore}</span>
+                      <span className="home_teams">{item.teams.home.name}</span>
+                    </StyledMatch>
+                  </div>
+                </StyledList>
+              </Link>
+            );
+          })}
+      </div>
+    </div>
   );
 }
 export default GetBaseball;
