@@ -1,5 +1,6 @@
-import GetBaseballList from "../components/GetBaseballList";
+import GetBaseballList from "../components/GetBaseballListTable";
 import GetSoccerList from "../components/GetSoccerList";
+import LoginBar from "../components/LoginBar"
 import styled from "styled-components";
 import { useState } from "react";
 const Container = styled.div`
@@ -13,9 +14,16 @@ const Image = styled.div`
 display: flex;
 justify-content: center;
 &>img{
+  
+margin-bottom:10px;
+margin-right:10px;
   width:10%;
   height:10%;
   border:1px solid #cccccc;
+  border-radius:100%;
+}
+&>img:hover{
+  border:1px solid black;
 }
 &>img:active{
   border:1px solid black;
@@ -47,7 +55,11 @@ const MainPage = () => {
   let date = new Date();
   date = YeardateFormat(date);
   return (
+
     <Container>
+
+      <LoginBar>
+      </LoginBar>
       <h1>{date + " 오늘의 경기"}</h1>
       <Image>
         <img src={`${process.env.PUBLIC_URL}/baseball.webp`} alt="" onClick={(e) => handleClickEvent(e, 'baseball')} />

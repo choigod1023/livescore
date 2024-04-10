@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MainPage from "./pages";
 import BaseballMatchPage from './pages/BaseballMatchPage';
 import SoccerMatchPage from './pages/SoccerMatchPage';
@@ -13,13 +13,13 @@ function App() {
   return (
     <bodyStyle>
       <BrowserRouter>
-          <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path='/match/baseball/:id' element= {<BaseballMatchPage />} />
-              <Route path='/match/soccer/:id' element={<SoccerMatchPage />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path='/match/baseball/:id' element={<BaseballMatchPage />} />
+          <Route path='/match/soccer/:id' element={<SoccerMatchPage />} />
+        </Routes>
       </BrowserRouter>
-      </bodyStyle>
+    </bodyStyle>
   );
 }
 

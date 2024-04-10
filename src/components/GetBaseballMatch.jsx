@@ -2,10 +2,21 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import BaseballFullPeriod from './BaseballFullPeriod';
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+
+const BaseballMatchStyle = styled.div`
+&{
+  text-align:center;
+}
+`
 const GetBaseballMatch = () => {
+  const location = useLocation();
+  console.log(location);
   const { id } = useParams();
   const [data, setData] = useState({
     axios_data: {},
+    inning_data: {},
     event: "period_full",
   });
   let axios_data = {};
@@ -19,43 +30,50 @@ const GetBaseballMatch = () => {
       setData(() => {
         return {
           axios_data: axios_data,
-          event: "",
+          inning_data: axios_data[location.state.period],
+          event: "display"
         }
       });
     })();
+
   }, []);
-  const periodButtonClickEvent = (e, message) => {
-    setData(() => {
+
+  const periodButtonClickEvent = (e, message, item) => {
+    console.log("item")
+    console.log(item)
+
+    setData(prev => {
       return {
-        axios_data: data.axios_data,
-        event: message
+        ...prev,
+        inning_data: item,
+        event: message,
       }
-    });
+    })
+
   }
   const selectComponent = {
 
-    period_full: <BaseballFullPeriod data={data} />
+    display: <BaseballFullPeriod data={data} />
+
   }
 
-  //   console.log(data[1]);
   return (
-    <div>
-      <h1>Baseball Match</h1>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_full")}>전체</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_1")}>1회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_2")}>2회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_3")}>3회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_4")}>4회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_5")}>5회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_6")}>6회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_7")}>7회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_8")}>8회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_9")}>9회</button>
-      <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_ext")}>연장</button>
+
+    <BaseballMatchStyle>
+      {/* <button className="period_button" onClick={(e) => periodButtonClickEvent(e, "period_full")}>전체</button> */}
+      {
+
+        Object.values(data.axios_data).map((item, idx) => {
+          console.log(idx);
+          return (<button className="period_button" onClick={(e) => periodButtonClickEvent(e, 'display', item)}>{idx + 1}회</button>);
+
+        })
+
+      }
       {data && <div>{selectComponent[data.event]}</div>}
 
 
-    </div>
+    </BaseballMatchStyle>
   );
 };
 export default GetBaseballMatch;

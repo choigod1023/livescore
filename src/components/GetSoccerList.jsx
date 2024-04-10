@@ -9,32 +9,33 @@ const StyledList = styled.li`
   text-align: center;
   height: 30px;
   border: 1px solid #eceff3;
+  border-radius : 5px;
   text-decoration: none;
   list-style-type: none;
   position: relative;
 
   &:hover {
     background-color: #eceff3;
+    // background-color:grey;
   }
 `;
 const StyledLeague = styled.div`
 float:left;
-width:200px;
+width:300px;
 font-size: 15px;
   .time{
     float:right;
     width: 80px;
     border: 1px solid #eceff3;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color : grey;
     color : white;
   }
 `;
 const StyledMatch = styled.div
   `
-.away_teams{
+.home_teams{
   margin-left:10px;
-  
 }
 `;
 
@@ -42,6 +43,7 @@ const StyledMatch = styled.div
 const linkStyle = {
   textDecoration: "none",
   color: "black",
+
 };
 
 const timeStyle = {
@@ -67,7 +69,7 @@ function TimedateFormat(date) {
   let today = new Date();
   let todayDay = today.getDate();
   let todayString = "오늘 ";
-  if (dayFormat >= todayDay) {
+  if (dayFormat > todayDay) {
     todayString = "내일 ";
   }
   let hour = "0";
@@ -94,7 +96,7 @@ function GetSoccer() {
     let string_today = YeardateFormat(today);
     (async () => {
       const res = await axios.get(
-        `https://sports-api.named.com/v1.0/popular-games?date=${string_today}&tomorrow-game-flag=true`
+        `https://sports-api.named.com/v1.0/sports/soccer/today-games?tomorrow-game-flag=true`
       );
       setData(res.data);
     })();
@@ -104,8 +106,8 @@ function GetSoccer() {
   return (
     <div>
       <div>
-        {data.soccer &&
-          data.soccer.map((item, index) => {
+        {data &&
+          data.map((item, index) => {
             let homeScoreData = item.teams.home.periodData;
             let awayScoreData = item.teams.away.periodData;
             let homeScore = 0;
@@ -118,8 +120,18 @@ function GetSoccer() {
             let nowTime = new Date();
 
             let matchTime = "몰라용";
-            if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "WIN")) {
-              matchTime = " 경기 종료 ";
+            if (item.league.shortName !== "J리그 1" && item.league.shortName !== "K리그 1" && item.league.shortName !== "K리그 2" && item.league.shortName !== "세리에 A" && item.league.shortName !== "리그앙" && item.league.shortName !== "EPL" && item.league.shortName !== "국제친선경기" && item.league.shortName !== "분데스리가" && item.league.shortName !== "클럽친선경기" && item.league.shortName !== "UEFA 챔피언스리그") {
+              return;
+              // console.log(item.league.shortName);
+
+            }
+            if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "DRAW" || matchResult === "WIN")) {
+              matchTime = " 경기 종료";
+            }
+            else if ((nowTime > objectMatchTime) && (matchResult === "CANCEL")) {
+              return;
+              // matchTime = " 경기 취소";
+
             }
             else if (nowTime > objectMatchTime && matchResult === "UNKNOWN") {
               matchTime = "경기 중";
@@ -131,16 +143,17 @@ function GetSoccer() {
               <Link
                 style={linkStyle}
                 to={{
-                  pathname: `/match/Soccer/${item.id}`,
-                  state: {
-                    id: item.id,
-                    name: item.name,
-                    date: item.date,
-                    homeName: item.teams.home.name,
-                    awayName: item.teams.away.name,
-                    homeScore: item.teams.home.score,
-                    awayScore: item.teams.away.score,
-                  },
+                  pathname: `/match/Soccer/${item.id}`
+                }}
+
+                state={{
+                  id: item.id,
+                  name: item.name,
+                  date: item.date,
+                  homeName: item.teams.home.name,
+                  awayName: item.teams.away.name,
+                  homeScore: homeScore,
+                  awayScore: awayScore,
                 }}
                 key={index}
               >
@@ -155,10 +168,11 @@ function GetSoccer() {
                       </StyledLeague>
                     </div>
                     <StyledMatch>
-                      <span className="away_teams">{item.teams.away.name}</span>
-                      <span className="score">{awayScore + " : "}</span>
-                      <span className="score">{homeScore}</span>
+
                       <span className="home_teams">{item.teams.home.name}</span>
+                      <span className="score">{homeScore + " : "}</span>
+                      <span className="score">{awayScore}</span>
+                      <span className="away_teams">{item.teams.away.name}</span>
                     </StyledMatch>
                   </div>
                 </StyledList>
@@ -166,7 +180,7 @@ function GetSoccer() {
             );
           })}
       </div>
-    </div>
+    </div >
   );
 }
 export default GetSoccer;

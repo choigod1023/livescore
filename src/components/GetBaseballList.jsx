@@ -19,7 +19,7 @@ const StyledList = styled.li`
 `;
 const StyledLeague = styled.div`
 float:left;
-width:200px;
+width:300px;
 font-size: 15px;
   .time{
     float:right;
@@ -67,7 +67,8 @@ function TimedateFormat(date) {
   let today = new Date();
   let todayDay = today.getDate();
   let todayString = "오늘 ";
-  if (dayFormat >= todayDay) {
+  console.log(dayFormat)
+  if (dayFormat > todayDay) {
     todayString = "내일 ";
   }
   let hour = "0";
@@ -89,12 +90,12 @@ function totalScore(periodData) {
 function GetBaseball() {
   const [data, setData] = useState([]);
 
+  let today = new Date();
+  let string_today = YeardateFormat(today);
   useEffect(() => {
-    let today = new Date();
-    let string_today = YeardateFormat(today);
     (async () => {
       const res = await axios.get(
-        `https://sports-api.named.com/v1.0/popular-games?date=${string_today}&tomorrow-game-flag=true`
+        `https://sports-api.named.com/v1.0/sports/baseball/games?date=${string_today}&status=ALL`
       );
       setData(res.data);
     })();
@@ -104,8 +105,8 @@ function GetBaseball() {
   return (
     <div>
       <div>
-        {data.baseball &&
-          data.baseball.map((item, index) => {
+        {data &&
+          data.map((item, index) => {
             let homeScoreData = item.teams.home.periodData;
             let awayScoreData = item.teams.away.periodData;
             let homeScore = 0;
