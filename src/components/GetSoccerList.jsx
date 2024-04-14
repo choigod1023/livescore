@@ -88,19 +88,17 @@ function totalScore(periodData) {
   return score;
 }
 
-function GetSoccer() {
+function GetSoccer({ date }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    let today = new Date();
-    let string_today = YeardateFormat(today);
     (async () => {
       const res = await axios.get(
-        `https://sports-api.named.com/v1.0/sports/soccer/today-games?tomorrow-game-flag=true`
+        `https://sports-api.named.com/v1.0/popular-games?date=${date}&tomorrow-game-flag=true`
       );
-      setData(res.data);
+      setData(res.data.soccer);
     })();
-  }, []);
+  }, [date]);
   console.log(data);
 
   return (

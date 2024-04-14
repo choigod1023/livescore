@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import * as React from 'react';
+import { useState } from "react";
+import SignInModal from "./SignInModal";
+import SignUpModal from "./SignUpModal";
+
 const HeaderStyles = styled.header`
 &{
     width:100%;
@@ -18,12 +23,13 @@ ul{
     text-decoration: none;
     font-weight:bold;
     margin-left:20px;
-    
+    color:black;    
 }
 .nav_link{
     text-decoration:none;
     color:black;
 }
+
 .nav_link:hover{
     color:#999999;
 }
@@ -34,20 +40,33 @@ ul li{
     margin-right : 20px;
 }
 `
+
 const LoginBar = () => {
-    return (
-        <HeaderStyles>
-            <Link id="Logo" to={'/'}>LiveScore</Link>
+    const [isInModalOpen, setIsInModalOpen] = useState(false);
+    const [isUpModalOpen, setIsUpModalOpen] = useState(false);
 
-            <ul>
+    const openInModal = () => setIsInModalOpen(true);
+    const openUpModal = () => setIsUpModalOpen(true);
+    const closeInModal = () => setIsInModalOpen(false);
+    const closeUpModal = () => setIsUpModalOpen(false);
 
-                <li>
-                    {"test"}님 어서오세요.
-                </li>
-                <li><Link to={'/login'} className="nav_link">Login</Link></li>
-                <li><Link to={'/register'} className="nav_link">Register</Link></li>
-            </ul>
-        </HeaderStyles>
+    return (<>        <HeaderStyles>
+        <Link id="Logo" to={'/'}>LiveScore</Link>
+
+        <ul>
+
+            <li>
+                {"test"}님 어서오세요.
+            </li>
+            <li><Link onClick={openInModal} className="nav_link">Sign In</Link></li>
+            <li><Link onClick={openUpModal} className="nav_link">Sign Up</Link></li>
+        </ul>
+    </HeaderStyles>
+        <SignInModal isOpen={isInModalOpen} closeModal={closeInModal}></SignInModal >
+        <SignUpModal isOpen={isUpModalOpen} closeModal={closeUpModal}></SignUpModal >
+    </>
+
+
     )
 }
 

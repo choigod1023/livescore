@@ -3,18 +3,26 @@ import GetSoccerList from "../components/GetSoccerList";
 import LoginBar from "../components/LoginBar"
 import styled from "styled-components";
 import { useState } from "react";
+import React from 'react'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import SvgIcon from "@mui/material/SvgIcon";
+import { SvgIconComponent } from "@mui/icons-material";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  h1{
+    margin:0;
+  }
 `;
 
 const Image = styled.div`
 display: flex;
 justify-content: center;
 &>img{
-  
+
 margin-bottom:10px;
 margin-right:10px;
   width:10%;
@@ -41,31 +49,69 @@ function YeardateFormat(date) {
 }
 
 const MainPage = () => {
-  const [data, setData] = useState('baseball');
+
+  let date = new Date();
+  let originalDate = date;
+  date = YeardateFormat(date).replace(" ", "");
+  const [data, setData] = useState({
+    message: 'baseball',
+    date: date,
+    originalDate: originalDate,
+  });
 
   const handleClickEvent = (e, message) => {
-    setData(message);
+    setData(prev => {
+      return {
+        ...prev,
+        message: message
+      }
+    });
   };
 
   const selectComponent = {
-    baseball: <GetBaseballList />,
-    soccer: <GetSoccerList />,
+    baseball: <GetBaseballList date={data.date} />,
+    soccer: <GetSoccerList date={data.date} />,
   };
+  const prevDate = () => {
+    let dd = new Date(data.originalDate)
+    originalDate = new Date(dd.setDate(dd.getDate() - 1));
+    date = (YeardateFormat(originalDate));
+    setData(prev => {
+      return {
+        ...prev,
+        date: date,
+        originalDate: originalDate,
+      }
+    });
 
-  let date = new Date();
-  date = YeardateFormat(date);
+  }
+  const nextDate = () => {
+    let dd = new Date(data.originalDate)
+    originalDate = new Date(dd.setDate(dd.getDate() + 1));
+    date = (YeardateFormat(originalDate));
+    setData(prev => {
+      return {
+        ...prev,
+        date: date,
+        originalDate: originalDate,
+      }
+    });
+
+  }
   return (
 
     <Container>
 
       <LoginBar>
       </LoginBar>
-      <h1>{date + " 오늘의 경기"}</h1>
+
+      <h1><SvgIcon onClick={prevDate} component={ArrowBackIosNewIcon} inheritViewBox /> <span>{data.date}</span><SvgIcon onClick={nextDate} component={ArrowForwardIosIcon} inheritViewBox /></h1>
+      <h1>경기 일정</h1>
       <Image>
         <img src={`${process.env.PUBLIC_URL}/baseball.webp`} alt="" onClick={(e) => handleClickEvent(e, 'baseball')} />
         <img src={`${process.env.PUBLIC_URL}/soccer.png`} onClick={(e) => handleClickEvent(e, 'soccer')} name="soccer" />
       </Image>
-      {data && <div>{selectComponent[data]}</div>}
+      {data && <div>{selectComponent[data.message]}</div>}
     </Container>
   );
 };

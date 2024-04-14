@@ -72,7 +72,7 @@ function totalScore(periodData) {
   return score;
 }
 
-function GetBaseball() {
+function GetBaseball({ date }) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const onClickPage = (state) => {
@@ -83,11 +83,11 @@ function GetBaseball() {
     let string_today = YeardateFormat(today);
     (async () => {
       const res = await axios.get(
-        `https://sports-api.named.com/v1.0/popular-games?date=${string_today}&tomorrow-game-flag=true`
+        `https://sports-api.named.com/v1.0/popular-games?date=${date}&tomorrow-game-flag=true`
       );
       setData(res.data);
     })();
-  }, []);
+  }, [date]);
   console.log(data);
 
   return (
@@ -97,7 +97,7 @@ function GetBaseball() {
           <tr className="tableHeader">
             <th>리그</th>
             <th>일정</th>
-            <th>어뒈이</th>
+            <th>어웨이</th>
             <th>점수</th>
             <th>홈</th>
             <th colSpan={3}>중계</th>
@@ -118,7 +118,7 @@ function GetBaseball() {
               let period = item.period;
               let nowTime = new Date();
               let matchTime = "몰라용";
-              if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "WIN")) {
+              if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "WIN" || matchResult === "DRAW")) {
                 matchTime = "경기 종료";
               }
               else if (nowTime > objectMatchTime && matchResult === "UNKNOWN") {

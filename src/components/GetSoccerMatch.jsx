@@ -2,6 +2,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
+import React from 'react'
+
 const StyledScore = styled.div`
 text-align:center;
 table,tr,th,td{

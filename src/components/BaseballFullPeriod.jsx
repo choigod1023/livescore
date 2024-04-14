@@ -1,5 +1,6 @@
 
 import styled from "styled-components";
+import React from 'react'
 
 const PeriodStyle = styled.div`
 border:1px solid black;
@@ -20,18 +21,20 @@ const periodFullComponent = (props) => {
         return (
             <>
                 {
+
                     inning_data.map((item, idx) => {
                         if (item.eventType === "PERIOD_INFO") {
-                            console.log('hi')
                             return (
                                 <div>
                                     <hr />
                                     <h2>{item.playText}</h2>
+                                    <hr />
                                 </div>
                             )
                         }
 
-                        return (<div>{item.eventType === "PLAYER_INTRODUCTION" ? <h3>{item.playText}</h3> : <div>{item.playText}</div>}</div>);
+                        return (<div>{item.eventType === "PLAYER_INTRODUCTION" ? <h3>{item.playText}</h3> : <div>{item.playText}</div>}</div >);
+
                     })
                 }
             </>

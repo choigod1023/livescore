@@ -3,7 +3,9 @@ import { useState } from "react";
 import styled from 'styled-components';
 import LoginBar from "../components/LoginBar"
 import { useLocation } from "react-router-dom";
-
+import React from 'react'
+import { Button } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const StyledNavigation = styled.nav`
 &{
@@ -55,9 +57,12 @@ const SoccerMatchPage = () => {
                 <ul id="matchMenu">
                     <li id="lineup" className={data === "gif" ? "active" : ""} onClick={(e) => handleClickEvent(e, 'gif')}>전력</li>
                     <li id="broadcast" className={data === "broadcast" ? "active" : ""} onClick={(e) => handleClickEvent(e, 'broadcast')}>중계</li>
+                    <Button sx={{ border: 1, margin: 1, borderRadius: '50%' }} onClick={(e) => { window.location.reload() }}>새로고침</Button>
+
                 </ul>
+
+                {data && <div>{selectComponent[data]}</div>}
             </StyledNavigation>
-            {data && <div>{selectComponent[data]}</div>}
         </>
     )
 }
