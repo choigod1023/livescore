@@ -32,6 +32,10 @@ export default function GetBaseballPitcherRecord({ data }) {
                             <TableCell align="center">삼진</TableCell>
                             <TableCell align="center">실점</TableCell>
                             <TableCell align="center">자책점</TableCell>
+                            <TableCell align="center">승</TableCell>
+                            <TableCell align="center">패</TableCell>
+                            <TableCell align="center">세이브</TableCell>
+                            <TableCell align="center">홀드</TableCell>
                             <TableCell align="center">오늘평자책</TableCell>
                             <TableCell align="center">시즌평자책</TableCell>
 
@@ -72,6 +76,19 @@ export default function GetBaseballPitcherRecord({ data }) {
                                 <TableCell align="center" component="th" scope="row">
                                     {row.earnedRun}
                                 </TableCell>
+                                <TableCell align="center" component="th" scope="row">
+                                    {row.wins}
+                                </TableCell>
+                                <TableCell align="center" component="th" scope="row">
+                                    {row.losses}
+                                </TableCell>
+                                <TableCell align="center" component="th" scope="row">
+                                    {row.saves}
+                                </TableCell>
+                                <TableCell align="center" component="th" scope="row">
+                                    {row.holds}
+                                </TableCell>
+
                                 <TableCell align="center" component="th" scope="row">
                                     {row.todayEarnedRunAverage}
                                 </TableCell>

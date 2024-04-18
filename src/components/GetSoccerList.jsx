@@ -118,7 +118,7 @@ function GetSoccer({ date }) {
             let nowTime = new Date();
 
             let matchTime = "몰라용";
-            if (item.league.shortName !== "J리그 1" && item.league.shortName !== "K리그 1" && item.league.shortName !== "K리그 2" && item.league.shortName !== "세리에 A" && item.league.shortName !== "리그앙" && item.league.shortName !== "EPL" && item.league.shortName !== "국제친선경기" && item.league.shortName !== "분데스리가" && item.league.shortName !== "클럽친선경기" && item.league.shortName !== "UEFA 챔피언스리그") {
+            if (item.league.shortName !== "일본 YBC 르방컵" && item.league.shortName !== "AFC선수권 U23" && item.league.shortName !== "한국 FA컵" && item.league.shortName !== "J리그 1" && item.league.shortName !== "K리그 1" && item.league.shortName !== "K리그 2" && item.league.shortName !== "세리에 A" && item.league.shortName !== "리그앙" && item.league.shortName !== "EPL" && item.league.shortName !== "국제친선경기" && item.league.shortName !== "분데스리가" && item.league.shortName !== "클럽친선경기" && item.league.shortName !== "UEFA 챔피언스리그") {
               return;
               // console.log(item.league.shortName);
 

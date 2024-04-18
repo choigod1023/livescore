@@ -6,7 +6,8 @@ import { useLocation } from "react-router-dom";
 import React from 'react'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Button } from '@mui/material';
-import GetBaseballLineup from '../components/GetBaseballLineup'
+import GetBaseballLineup from '../components/GetBaseballLineup';
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -44,6 +45,13 @@ const StyledNavigation = styled.nav`
     color:white;
 }
 `
+
+// export const setCookie = (name, value, option) => {
+//     return cookies.set(name, value, option);
+// }
+// export const getCookie = (name) => {
+//     return cookies.get(name);
+// }
 const BaseballMatchPage = () => {
     const [data, setData] = useState('broadcast');
     const location = useLocation();
@@ -52,7 +60,13 @@ const BaseballMatchPage = () => {
         broadcast: <GetBaseballMatch />,
         lineup: <GetBaseballLineup />
     }
-    console.log(location.state)
+    console.log("State")
+    console.log(location);
+    // setCookie('location', JSON.stringify(location))
+    // console.log(getCookie('location'));
+    // if (location.state === null) {
+
+    // }
     const handleClickEvent = (e, message) => {
         setData(message);
 

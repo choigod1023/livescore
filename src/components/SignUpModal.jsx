@@ -14,6 +14,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from "@mui/material/Modal";
 import styled from "styled-components";
+
+import { toast, ToastContainer } from 'react-toastify';
+
+
 const ModalStyles = styled.div`
 &{
     background-color: white;   
@@ -47,10 +51,19 @@ export default function SignUp({ isOpen, closeModal }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        const SignUpData = {
+            lastName: data.get('lastName'),
+            firstName: data.get('firstName'),
             email: data.get('email'),
             password: data.get('password'),
-        });
+        };
+        if (SignUpData.lastName && SignUpData.firstName && SignUpData.email && SignUpData.password) {
+            toast.success(`회원가입 성공!`);
+            closeModal();
+        }
+        else {
+            toast.error("회원가입 정보를 재확인하세요!");
+        }
     };
 
     return (

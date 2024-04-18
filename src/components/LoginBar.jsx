@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useState } from "react";
 import SignInModal from "./SignInModal";
 import SignUpModal from "./SignUpModal";
+import { useLocation } from "react-router-dom";
 
 const HeaderStyles = styled.header`
 &{
@@ -42,6 +43,9 @@ ul li{
 `
 
 const LoginBar = () => {
+    const location = useLocation();
+    console.log("login");
+    console.log(location);
     const [isInModalOpen, setIsInModalOpen] = useState(false);
     const [isUpModalOpen, setIsUpModalOpen] = useState(false);
 
@@ -58,8 +62,8 @@ const LoginBar = () => {
             <li>
                 {"test"}님 어서오세요.
             </li>
-            <li><Link onClick={openInModal} className="nav_link">Sign In</Link></li>
-            <li><Link onClick={openUpModal} className="nav_link">Sign Up</Link></li>
+            <li><Link state={location.state} onClick={openInModal} className="nav_link">Sign In</Link></li>
+            <li><Link state={location.state} onClick={openUpModal} className="nav_link">Sign Up</Link></li>
         </ul>
     </HeaderStyles>
         <SignInModal isOpen={isInModalOpen} closeModal={closeInModal}></SignInModal >

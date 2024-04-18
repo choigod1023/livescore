@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from "@mui/material/Modal";
 import styled from "styled-components";
+import { toast } from 'react-toastify';
 
 const ModalStyles = styled.div`
 &{
@@ -48,10 +49,18 @@ export default function SignIn({ isOpen, closeModal }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        const SigninData = {
             email: data.get('email'),
             password: data.get('password'),
-        });
+        };
+        if (SigninData.password == '' || SigninData.email == '') {
+            toast.error("로그인 정보를 확인하세요!");
+        }
+        else {
+            toast.success("로그인 성공!");
+
+        }
+
     };
 
     return (
