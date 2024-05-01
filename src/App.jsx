@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainPage from "./pages";
+import MainPage from "./pages/index";
 import BaseballMatchPage from './pages/BaseballMatchPage';
 import SoccerMatchPage from './pages/SoccerMatchPage';
 import styled from 'styled-components'

@@ -3,8 +3,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import useInterval from "./useInterval";
+import { Button, Switch } from '@mui/material';
 
+import FormControlLabel from '@mui/material/FormControlLabel';
+const label = {
+  inputProps: { 'aria-label': 'Switch demo' }
+};
 
 const linkStyle = {
   textDecoration: "none",
@@ -12,6 +16,9 @@ const linkStyle = {
 };
 
 const TableStyle = styled.div`
+&{
+  text-align:center;
+}
 table,tr,th,td
 {
   margin:5px;
@@ -50,11 +57,14 @@ function TimedateFormat(date) {
   let hourFormat = date.getHours();
   let minuteFormat = date.getMinutes();
   let dayFormat = date.getDate();
+  let timeFormat = date.getTime();
   let today = new Date();
   let todayDay = today.getDate();
+  let todayTime = today.getTime();
+  console.log(timeFormat, todayTime);
   let todayString = "오늘 ";
-  if (dayFormat > todayDay) {
-    todayString = "내일 ";
+  if (timeFormat > todayTime) {
+    todayString = dayFormat + "일 ";
   }
   let hour = "0";
   let minute = "0";
@@ -74,24 +84,40 @@ function totalScore(periodData) {
 
 function GetBaseball({ date }) {
   const [data, setData] = useState([]);
+  const [isIntervalRunning, setIsIntervalRunning] = useState(false);
   const navigate = useNavigate();
   const onClickPage = (state) => {
     navigate(`/match/baseball/${state.id}`, { state: state });
   }
   useEffect(() => {
+    let interval;
     let today = new Date();
     let string_today = YeardateFormat(today);
-    (async () => {
+    const fetchdata = async () => {
       const res = await axios.get(
         `https://sports-api.named.com/v1.0/popular-games?date=${date}&tomorrow-game-flag=true`
       );
+      console.log("hi");
       setData(res.data);
-    })();
-  }, [date]);
+    };
+    fetchdata();
+    if (!isIntervalRunning) {
+      interval = setInterval(fetchdata, 5000);
+      fetchdata();
+    }
+    return () => {
+      clearInterval(interval);
+    }
+  }, [date, isIntervalRunning]);
   console.log(data);
-
+  const toggleInterval = () => {
+    setIsIntervalRunning(prevState => !prevState);
+  };
   return (
     <TableStyle>
+      <FormControlLabel control={<Switch onClick={toggleInterval} {...label} defaultChecked />} label="새로고침" />
+
+
       <table>
         <thead>
           <tr className="tableHeader">
@@ -120,6 +146,9 @@ function GetBaseball({ date }) {
               let matchTime = "몰라용";
               if ((nowTime > objectMatchTime) && (matchResult === "LOSE" || matchResult === "WIN" || matchResult === "DRAW")) {
                 matchTime = "경기 종료";
+              }
+              else if (matchResult === "CANCEL") {
+                matchTime = "경기 취소";
               }
               else if (nowTime > objectMatchTime && matchResult === "UNKNOWN") {
                 matchTime = "경기 중";

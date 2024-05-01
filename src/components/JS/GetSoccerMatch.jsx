@@ -55,10 +55,10 @@ const GetSoccerMatch = (item) => {
 
                 <tr key={idx}>
                   <th>{resultTime}</th>
-                  {item.eventType === "SUBSTITUTE" ? <td><img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/substitution.png`} alt="sub" /></td> : ""}
-                  {item.eventType === "GOAL" || item.eventType === "OWN_GOAL" ? <td><img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/soccer.png`} alt="goal" /></td> : ""}
-                  {item.eventType === "YELLOW_CARD" ? <td><img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/yellowcard.png`} alt="yellowcard" /></td> : ""}
-                  {item.eventType === "RED_CARD" ? <td><img width="20rem" height="20rem" src={`${process.env.PUBLIC_URL}/redcard.png`} alt="redcard" /></td> : ""}
+                  {item.eventType === "SUBSTITUTE" ? <td><img width="20rem" height="20rem" src={`/substitution.png`} alt="sub" /></td> : ""}
+                  {item.eventType === "GOAL" || item.eventType === "OWN_GOAL" ? <td><img width="20rem" height="20rem" src={`/soccer.png`} alt="goal" /></td> : ""}
+                  {item.eventType === "YELLOW_CARD" ? <td><img width="20rem" height="20rem" src={`/yellowcard.png`} alt="yellowcard" /></td> : ""}
+                  {item.eventType === "RED_CARD" ? <td><img width="20rem" height="20rem" src={`/redcard.png`} alt="redcard" /></td> : ""}
                   {item.eventType !== "" ? <td colSpan={2}>{item.playText}</td> : ""}
                 </tr>
               )

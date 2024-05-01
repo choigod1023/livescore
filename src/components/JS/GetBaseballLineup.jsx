@@ -5,11 +5,15 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import GetbaseballPitcher from './GetBaseballPitcher'
 import GetbaseballBatter from './GetBaseballBatter';
-import { Button } from '@mui/material';
 import styled from "styled-components";
 
-import axios from 'axios';
+import { Button, Switch } from '@mui/material';
 
+import FormControlLabel from '@mui/material/FormControlLabel';
+import axios from 'axios';
+const label = {
+    inputProps: { 'aria-label': 'Switch demo' }
+};
 const LineupStyle = styled.div`
 &{
     text-align: center;
@@ -20,6 +24,8 @@ const LineupStyle = styled.div`
 }
 `
 export default function GetBaseballLineup() {
+    const [isIntervalRunning, setIsIntervalRunning] = useState(false);
+
     const [data, setData] = useState({
         homeData: {},
         awayData: {},
@@ -30,11 +36,13 @@ export default function GetBaseballLineup() {
     let homeData = {};
     let awayData = {};
     useEffect(() => {
-        (async () => {
+        let interval;
+
+        const fetchdata = async () => {
             const result = await axios.get(`https://sports-api.named.com/v1.0/sports/baseball/games/${id}/lineup`);
             homeData = result.data.home;
             awayData = result.data.away;
-            console.log(homeData);
+            console.log("hi");
             setData((prev) => {
                 return {
                     ...prev,
@@ -42,10 +50,21 @@ export default function GetBaseballLineup() {
                     awayData: awayData
                 }
             })
-        })();
-    }, []);
+        };
+        fetchdata();
+        if (!isIntervalRunning) {
+            interval = setInterval(fetchdata, 5000);
+            fetchdata();
+        }
+        return () => {
+            clearInterval(interval);
+        }
+    }, [isIntervalRunning]);
     console.log("data");
     console.log(data.homeData.pitchings);
+    const toggleInterval = () => {
+        setIsIntervalRunning(prevState => !prevState);
+    };
     const onclickEvent = (e, message) => {
         setData((prev) => {
             return {
@@ -62,6 +81,10 @@ export default function GetBaseballLineup() {
 
     return (
         <LineupStyle>
+            <div>
+                <FormControlLabel control={<Switch onClick={toggleInterval} {...label} defaultChecked />} label="자동새로고침" />
+            </div>
+
             <Button onClick={(e) => {
                 onclickEvent(e, "home");
             }} sx={{ mx: 1, minWidth: '300px', border: 1, margin: 1 }} className={data.active === "home" ? "active" : null}>홈</Button>
@@ -69,7 +92,7 @@ export default function GetBaseballLineup() {
                 onclickEvent(e, "away");
             }} sx={{ mx: 1, minWidth: '300px', border: 1, margin: 1 }} className={data.active === "away" ? "active" : null}>어웨이</Button>
 
-            {data.homeData && Component[data.active]}
+            {Object.keys(data.homeData) === 0 && Component[data.active]}
         </LineupStyle >
     );
 }

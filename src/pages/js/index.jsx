@@ -7,7 +7,6 @@ import React from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import SvgIcon from "@mui/material/SvgIcon";
-import { SvgIconComponent } from "@mui/icons-material";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -108,8 +107,8 @@ const MainPage = () => {
       <h1><SvgIcon onClick={prevDate} component={ArrowBackIosNewIcon} inheritViewBox /> <span>{data.date}</span><SvgIcon onClick={nextDate} component={ArrowForwardIosIcon} inheritViewBox /></h1>
       <h1>경기 일정</h1>
       <Image>
-        <img src={`${process.env.PUBLIC_URL}/baseball.webp`} alt="" onClick={(e) => handleClickEvent(e, 'baseball')} />
-        <img src={`${process.env.PUBLIC_URL}/soccer.png`} onClick={(e) => handleClickEvent(e, 'soccer')} name="soccer" />
+        <img src={`./baseball.webp`} alt="" onClick={(e) => handleClickEvent(e, 'baseball')} />
+        <img src={`./soccer.png`} onClick={(e) => handleClickEvent(e, 'soccer')} name="soccer" />
       </Image>
       {data && <div>{selectComponent[data.message]}</div>}
     </Container>
