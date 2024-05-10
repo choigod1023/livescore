@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import GetBaseballLineup from "../components/GetBaseballLineup";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import BaseballScoreBoard from "../components/BaseballScoreBoard";
 const theme = createTheme({
   palette: {
     primary: {
@@ -55,8 +55,18 @@ const BaseballMatchPage = () => {
     homeScore: 0,
     awayScore: 0,
     period: 0,
+    homeName: "",
+    awayName: "",
     inningDivision: "",
     gameStatus: "",
+    homePeriodData: [],
+    awayPeriodData: [],
+    homeHitCount: 0,
+    homeErrorCount: 0,
+    homeBaseOnBallCount: 0,
+    awayHitCount: 0,
+    awayErrorCount: 0,
+    awayBaseOnBallCount: 0,
   });
   const location = useLocation();
   let axios_data: any;
@@ -83,13 +93,31 @@ const BaseballMatchPage = () => {
       let inningDivision = axios_data.inningDivision === "TOP" ? "초" : "말";
       let period: number = axios_data.period;
       let gameStatus = axios_data.gameStatus;
+      let homePeriodData = axios_data.teams.home.periodData;
+      let awayPeriodData = axios_data.teams.away.periodData;
+      let homeHitcount = axios_data.teams.home.hitCount;
+      let awayHitCount = axios_data.teams.away.hitCount;
+      let homeErrorCount = axios_data.teams.home.errorCount;
+      let awayErrorCount = axios_data.teams.away.errorCount;
+      let homeBaseOnBallCount = axios_data.teams.home.baseOnBallCount;
+      let awayBaseOnBallCount = axios_data.teams.away.baseOnBallCount;
       setScore(() => {
         return {
           homeScore: homeScore,
           awayScore: awayScore,
+          homeName: location.state.homeName,
+          awayName: location.state.awayName,
           period: period,
           inningDivision: inningDivision,
           gameStatus: gameStatus,
+          homePeriodData: homePeriodData,
+          awayPeriodData: awayPeriodData,
+          homeHitCount: homeHitcount,
+          homeErrorCount: homeErrorCount,
+          homeBaseOnBallCount: homeBaseOnBallCount,
+          awayHitCount: awayHitCount,
+          awayErrorCount: awayErrorCount,
+          awayBaseOnBallCount: awayBaseOnBallCount,
         };
       });
     };
@@ -117,11 +145,11 @@ const BaseballMatchPage = () => {
   const handleClickEvent = (e, message) => {
     setData(message);
   };
+  console.log(score);
   return (
     <>
       <ThemeProvider theme={theme}>
         <LoginBar />
-
         <StyledNavigation>
           <h1>
             {location.state.awayName +
@@ -137,6 +165,7 @@ const BaseballMatchPage = () => {
               ? score.period + "회 " + score.inningDivision
               : score.gameStatus}
           </h2>
+          {score.homePeriodData && <BaseballScoreBoard state={{ score }} />}
 
           <ul id="matchMenu">
             <li

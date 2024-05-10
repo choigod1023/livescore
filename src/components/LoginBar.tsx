@@ -26,6 +26,14 @@ const HeaderStyles = styled.header`
     margin-left: 20px;
     color: black;
   }
+  #Rank {
+    height: 100%;
+    line-height: 3;
+    font-size: 1em;
+    text-decoration: none;
+    margin-left: 20px;
+    color: black;
+  }
   .nav_link {
     text-decoration: none;
     color: black;
@@ -56,10 +64,12 @@ const LoginBar = () => {
 
   return (
     <>
-      {" "}
       <HeaderStyles>
         <Link id="Logo" to={"/"}>
           LiveScore
+        </Link>
+        <Link id="Rank" to={"/rank"}>
+          순위표
         </Link>
 
         <ul>

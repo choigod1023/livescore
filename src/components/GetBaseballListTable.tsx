@@ -254,7 +254,7 @@ function GetBaseball({ date }) {
                       <td className="current_pitcher">
                         {(item.currentPitcher && item.currentPitcher.name) +
                           " vs " +
-                          (item.currentBatter && item.currentBatter.name)}
+                          (item.currentBatter ? item.currentBatter.name : "?")}
                       </td>
                     ) : (
                       ""

@@ -44,7 +44,7 @@ function YeardateFormat(date: Date) {
 
   return date.getFullYear() + "-" + month + "-" + day;
 }
-
+let currentPath = "";
 const MainPage = () => {
   let date: Date | string = new Date();
   let originalDate = date;

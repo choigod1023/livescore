@@ -3,7 +3,14 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
     server: {
-        port: 81
+        port: 81,
+        proxy: {
+            "/api": {
+                target: "https://sports.daum.net/prx/hermes/api",
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ""),
+            },
+        }
     },
     plugins: [react()],
     build: {
