@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# livescore
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> 내가 보려고 만든 라이브스코어 — 야구(KBO/MLB)·축구 경기 일정과 실시간 스코어를 한눈에
 
-## Available Scripts
+## 소개
 
-In the project directory, you can run:
+**livescore**는 야구와 축구 경기의 일정·스코어·순위·라인업을 확인하기 위해 개인적으로 만든 라이브스코어 웹 애플리케이션입니다. 날짜별 경기 목록에서 야구/축구를 전환하고, 개별 경기를 눌러 상세 정보(스코어보드, 라인업, 타자/투수 기록)를 확인하거나 리그 팀 순위를 조회할 수 있습니다.
 
-### `npm start`
+React + TypeScript로 작성되었으며 빌드/개발 서버는 Vite를 사용합니다. 경기 데이터는 외부 스포츠 API(`sports-api.named.com`)에서, 팀 순위는 다음 스포츠(`sports.daum.net`) 프록시를 통해 가져옵니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ✨ 주요 기능 (코드 기준)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **날짜별 경기 목록**: 메인 화면에서 이전/다음 날짜로 이동하며 해당 날짜의 인기 경기 목록을 조회합니다. (`GetBaseballListTable`, `GetSoccerList` — `/popular-games?date=` 호출)
+- **야구 / 축구 전환**: 메인 화면 상단 아이콘으로 야구 목록과 축구 목록을 토글합니다.
+- **야구 경기 상세**: 경기별 스코어보드, 라인업, 타자·투수 기록을 표시합니다. (`BaseballMatchPage`, `GetBaseballMatch`, `GetBaseballLineup`, `GetBaseballBatter`, `GetBaseballPitcher`, `BaseballScoreBoard`)
+- **축구 경기 상세**: 경기별 상세 정보를 표시합니다. (`SoccerMatchPage`, `GetSoccerMatch`)
+- **팀 순위**: KBO 등 리그의 팀 순위를 조회합니다. (`RankPage`, `BaseballRank`, `BaseballMLB`, `SoccerRank` — 다음 스포츠 `team/rank.json` 호출)
+- **로그인 / 회원가입 모달**: MUI 기반의 로그인·회원가입 모달 UI를 제공합니다. 입력값 검증 후 `react-toastify`로 성공/실패 토스트를 표시하는 클라이언트 UI로, 별도의 인증 백엔드 연동은 없습니다. (`LoginBar`, `SignInModal`, `SignUpModal`)
 
-### `npm test`
+## 🛠 기술 스택
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![MUI](https://img.shields.io/badge/MUI-5-007FFF?logo=mui&logoColor=white)
+![React Router](https://img.shields.io/badge/React%20Router-6-CA4245?logo=reactrouter&logoColor=white)
 
-### `npm run build`
+- **React 18**, **TypeScript**, **Vite 5** (`@vitejs/plugin-react`)
+- **react-router-dom 6** (라우팅)
+- **@mui/material** · **@mui/icons-material** · **@emotion**, 일부 **@material-ui/core**(v4) 테마
+- **styled-components**, **react-toastify**
+- **axios** (데이터 페칭)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🏗 동작 방식 / 아키텍처
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 진입점 `src/index.jsx`가 `App.tsx`를 렌더링합니다. `App`은 `ThemeProvider`(커스텀 MUI 테마)와 `ToastContainer`로 감싼 `BrowserRouter`를 구성합니다.
+- **라우팅** (`react-router-dom`):
+  - `/` — 메인(경기 목록, `pages/index.tsx`)
+  - `/match/baseball/:id` — 야구 경기 상세
+  - `/match/soccer/:id` — 축구 경기 상세
+  - `/rank` — 팀 순위
+- **데이터 소스**:
+  - 경기 목록·상세·라인업: `https://sports-api.named.com/v1.0/...` (예: `/popular-games?date=`, `/sports/baseball/games/{id}/...`)
+  - 팀 순위: 다음 스포츠 `team/rank.json`. `vite.config.js`의 프록시가 `/api` 요청을 `https://sports.daum.net/prx/hermes/api`로 전달합니다.
+- **컴포넌트 구성**: `src/components/`에 목록·상세·순위·인증 컴포넌트가 있으며, `src/components/JS/`·`src/pages/js/`에는 TypeScript 전환 이전의 JavaScript 버전이 함께 보관되어 있습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 시작하기
 
-### `npm run eject`
+### 사전 요구사항
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Node.js
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 설치
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 환경변수
 
-## Learn More
+`.env`에는 소스맵 생성을 끄는 설정만 포함되어 있습니다. 별도의 API 키나 시크릿은 필요하지 않습니다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```env
+GENERATE_SOURCEMAP=false
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 실행
 
-### Code Splitting
+```bash
+npm start        # Vite 개발 서버 (포트 81)
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+> `start` 스크립트는 `set PORT=81 && vite` 형태(Windows 셸 기준)이며, 실제 개발 서버 포트는 `vite.config.js`에서 `81`로 지정되어 있습니다. 접속 주소는 `http://localhost:81` 입니다.
 
-### Analyzing the Bundle Size
+### 빌드
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run build    # vite build (출력 디렉토리: dist, assetsDir: static)
+```
 
-### Making a Progressive Web App
+## 📁 구조
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+livescore/
+├── index.html
+├── vite.config.js            # 개발 서버 포트 · /api 프록시 · 빌드 설정
+├── src/
+│   ├── index.jsx             # 진입점
+│   ├── App.tsx               # 라우팅 · 테마 · 토스트
+│   ├── CustomMuiTheme.jsx    # MUI 커스텀 테마
+│   ├── pages/                # index, BaseballMatchPage, SoccerMatchPage, RankPage
+│   │   └── js/               # (레거시) JS 버전 페이지
+│   └── components/           # 경기 목록/상세/순위/인증 컴포넌트
+│       └── JS/               # (레거시) JS 버전 컴포넌트
+└── public/                   # 아이콘 · 로고 · 스포츠 이미지
+```
