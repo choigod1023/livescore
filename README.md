@@ -1,5 +1,7 @@
 # livescore
 
+**한국어** · [日本語](README.ja.md) · [English](README.en.md)
+
 > 내가 보려고 만든 라이브스코어 — 야구(KBO/MLB)·축구 경기 일정과 실시간 스코어를 한눈에
 
 ## 소개
