@@ -104,7 +104,7 @@ livescore/
 | Item | Detail |
 |---|---|
 | **Contribution share** | **100%** (solo development) |
-| **Commits** | 15 / 15 (mine / all human commits) |
+| **Commits** | 17 / 17 (mine / all human commits) |
 | **Contributors** | 1 |
 
-<sub>Contribution share is counted by commit author email; bot and automation commits are excluded.</sub>
+<sub>Counting basis: commits reachable from **every branch** on origin (merge commits and empty commits excluded), counted by commit author email with one person’s multiple addresses merged; bot and automation commits are excluded.</sub>
